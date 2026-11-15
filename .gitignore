@@ -1,0 +1,31 @@
+# Operating-system metadata and editor state
+.DS_Store
+._*
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local credentials and machine-specific settings; the game requires none
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+.aws/
+.ssh/
+.npmrc
+.netrc
+.agents/
+.claude/
+.codex/
+
+# Dependencies, generated releases and test artifacts
+node_modules/
+dist/
+coverage/
+test-results/
+playwright-report/
+*.log

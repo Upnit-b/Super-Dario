@@ -1,47 +1,152 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#101d22">
-<title>Nova Rift — The Eight Relays</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23121e25'/%3E%3Cpath d='M14 48V16l36 32V16' fill='none' stroke='%2399f4d2' stroke-width='6'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<div id="app">
-  <canvas id="game" tabindex="0" aria-label="Nova Rift 3D platform adventure. A and D move, Space jumps, Shift sprints, X fires, Escape pauses."></canvas>
-  <div class="vignette" aria-hidden="true"></div>
-  <header id="topbar"><a class="brand" href="#" aria-label="Nova Rift home"><span class="brand-mark">N</span> NOVA RIFT <span class="edition">THE EIGHT RELAYS</span></a><nav><button id="sound" class="icon-button" aria-label="Toggle sound">♪ <span>Sound on</span></button><button id="fullscreen" class="icon-button" aria-label="Toggle fullscreen">⛶</button></nav></header>
-  <main id="menu" class="menu">
-    <div class="eyebrow"><span class="status-dot"></span> AN ORIGINAL 3D ADVENTURE</div>
-    <h1>A world worth<br><em>bringing back.</em></h1>
-    <p class="intro-copy">Eight lost relays. One last signal.<br>Run, leap and fight your way through a beautiful, broken world.</p>
-    <div class="menu-actions"><button id="start" class="primary">Begin expedition <span>↗</span></button><button id="continue" class="secondary" hidden>Continue journey <span>→</span></button></div>
-    <div class="character-picker"><div class="label">YOUR EXPLORER <span id="hero-role">FIELD ENGINEER</span></div><div class="characters"><button class="character selected" data-hero="0"><span class="swatch nova"></span>Nova</button><button class="character" data-hero="1"><span class="swatch atlas"></span>Atlas</button><button class="character" data-hero="2"><span class="swatch mira"></span>Mira</button></div></div>
-    <div class="menu-foot"><button id="guide-button" class="text-button">How to play <span>↗</span></button><span>32 STAGES <i>·</i> 8 WORLDS <i>·</i> YOUR ADVENTURE</span></div>
-  </main>
-  <div id="scene-caption"><span class="caption-line"></span><div><span class="label">01 / VERDANT REACH</span><p>Where the signal begins.</p></div></div>
-  <div id="hud" hidden>
-    <div class="hud-left"><div class="world-chip"><span id="stage-number">01—01</span><div><span class="label">CURRENT EXPEDITION</span><b id="world-name">Verdant Reach</b></div></div><div class="vitals"><span id="lives">♥ ♥ ♥</span><span class="divider"></span><span class="coin-icon">◇</span><b id="coins">00</b><span class="divider"></span><span class="label">SCORE</span><b id="score">000000</b></div></div>
-    <div class="hud-right"><button id="pause" class="icon-button" aria-label="Pause game">Ⅱ</button><div class="timer"><span class="label">TIME LEFT</span><b id="timer">5:00</b></div></div>
-    <div class="route"><span id="route-label">REACH THE RELAY</span><div><i id="progress"></i></div><b>◈</b></div>
-    <div id="weapon-chip"><span class="weapon-symbol">⌁</span><div><span class="label">EQUIPMENT</span><b id="weapon-name">Find a blaster</b></div><kbd>X</kbd></div>
-    <div id="star-status" hidden>✦ NOVA STAR <b id="star-seconds"></b><div><i id="star-progress"></i></div></div>
-    <div id="boss-status" hidden><span>THE WARDEN</span><div><i id="boss-health"></i></div></div>
-    <div class="play-hints"><kbd>A</kbd><kbd>D</kbd> move <kbd>Space</kbd> jump <kbd>Shift</kbd> sprint <kbd>X</kbd> fire <kbd>Esc</kbd> pause</div>
-  </div>
-  <div id="toast" role="status" hidden></div>
-  <div id="storage-warning" role="status" hidden></div>
-  <section id="overlay" class="overlay" hidden aria-label="Game dialog"><div class="dialog"><div id="dialog-eyebrow" class="eyebrow"></div><h2 id="dialog-title"></h2><p id="dialog-copy"></p><div id="dialog-extra"></div><button id="dialog-action" class="primary">Continue <span>→</span></button><button id="dialog-secondary" class="text-button" hidden>Return to title</button></div></section>
-  <div id="loading"><span class="brand-mark">N</span><p>Preparing your expedition…</p></div>
-  <div id="error" role="alert" hidden><h2>The expedition could not start.</h2><p id="error-copy"></p><p>Launch with <b>start.command</b>, then open the local address. This game requires a browser with WebGL 2 graphics enabled.</p></div>
-</div>
-<script src="js/audio.js"></script>
-<script src="js/levels.js"></script>
-<script src="js/game.js"></script>
-<script src="js/ui.js"></script>
-<script type="module" src="js/renderer.mjs"></script>
-<script nomodule>document.getElementById('error').hidden=false;</script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#101d22" />
+    <meta
+      name="description"
+      content="Explore eight worlds in Nova Rift, a free 3D platform adventure with original procedural artwork and synthesized music. No accounts or downloads during play."
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'"
+    />
+    <title>Nova Rift — The Eight Relays</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23121e25'/%3E%3Cpath d='M14 48V16l36 32V16' fill='none' stroke='%2399f4d2' stroke-width='6'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <canvas
+        id="game"
+        tabindex="0"
+        aria-label="Nova Rift 3D platform adventure. A and D move, Space jumps, Shift sprints, X fires, Escape pauses."
+      ></canvas>
+      <div class="vignette" aria-hidden="true"></div>
+      <header id="topbar">
+        <a class="brand" href="#" aria-label="Nova Rift home"
+          ><span class="brand-mark">N</span> NOVA RIFT
+          <span class="edition">THE EIGHT RELAYS</span></a
+        >
+        <nav>
+          <button id="sound" class="icon-button" aria-label="Toggle sound">
+            ♪ <span>Sound on</span></button
+          ><button id="fullscreen" class="icon-button" aria-label="Toggle fullscreen">⛶</button>
+        </nav>
+      </header>
+      <main id="menu" class="menu">
+        <div class="eyebrow"><span class="status-dot"></span> AN ORIGINAL 3D ADVENTURE</div>
+        <h1>A world worth<br /><em>bringing back.</em></h1>
+        <p class="intro-copy">
+          Eight lost relays. One last signal.<br />Run, leap and fight your way through a beautiful,
+          broken world.
+        </p>
+        <div class="menu-actions">
+          <button id="start" class="primary">Begin expedition <span>↗</span></button
+          ><button id="continue" class="secondary" hidden>Continue journey <span>→</span></button>
+        </div>
+        <div class="character-picker">
+          <div class="label">YOUR EXPLORER <span id="hero-role">FIELD ENGINEER</span></div>
+          <div class="characters">
+            <button class="character selected" data-hero="0">
+              <span class="swatch nova"></span>Nova</button
+            ><button class="character" data-hero="1"><span class="swatch atlas"></span>Atlas</button
+            ><button class="character" data-hero="2"><span class="swatch mira"></span>Mira</button>
+          </div>
+        </div>
+        <div class="menu-foot">
+          <button id="guide-button" class="text-button">How to play <span>↗</span></button
+          ><span>32 STAGES <i>·</i> 8 WORLDS <i>·</i> YOUR ADVENTURE</span>
+        </div>
+      </main>
+      <div id="scene-caption">
+        <span class="caption-line"></span>
+        <div>
+          <span class="label">01 / VERDANT REACH</span>
+          <p>Where the signal begins.</p>
+        </div>
+      </div>
+      <div id="hud" hidden>
+        <div class="hud-left">
+          <div class="world-chip">
+            <span id="stage-number">01—01</span>
+            <div>
+              <span class="label">CURRENT EXPEDITION</span><b id="world-name">Verdant Reach</b>
+            </div>
+          </div>
+          <div class="vitals">
+            <span id="lives">♥ ♥ ♥</span><span class="divider"></span
+            ><span class="coin-icon">◇</span><b id="coins">00</b><span class="divider"></span
+            ><span class="label">SCORE</span><b id="score">000000</b>
+          </div>
+        </div>
+        <div class="hud-right">
+          <button id="pause" class="icon-button" aria-label="Pause game">Ⅱ</button>
+          <div class="timer"><span class="label">TIME LEFT</span><b id="timer">5:00</b></div>
+        </div>
+        <div class="route">
+          <span id="route-label">REACH THE RELAY</span>
+          <div><i id="progress"></i></div>
+          <b>◈</b>
+        </div>
+        <div id="weapon-chip">
+          <span class="weapon-symbol">⌁</span>
+          <div><span class="label">EQUIPMENT</span><b id="weapon-name">Find a blaster</b></div>
+          <kbd>X</kbd>
+        </div>
+        <div id="star-status" hidden>
+          ✦ NOVA STAR <b id="star-seconds"></b>
+          <div><i id="star-progress"></i></div>
+        </div>
+        <div id="boss-status" hidden>
+          <span>THE WARDEN</span>
+          <div><i id="boss-health"></i></div>
+        </div>
+        <div class="play-hints">
+          <kbd>A</kbd><kbd>D</kbd> move <kbd>Space</kbd> jump <kbd>Shift</kbd> sprint
+          <kbd>X</kbd> fire <kbd>Esc</kbd> pause
+        </div>
+      </div>
+      <div id="toast" role="status" hidden></div>
+      <div id="storage-warning" role="status" hidden></div>
+      <section id="overlay" class="overlay" hidden aria-label="Game dialog">
+        <div class="dialog">
+          <div id="dialog-eyebrow" class="eyebrow"></div>
+          <h2 id="dialog-title"></h2>
+          <p id="dialog-copy"></p>
+          <div id="dialog-extra"></div>
+          <button id="dialog-action" class="primary">Continue <span>→</span></button
+          ><button id="dialog-secondary" class="text-button" hidden>Return to title</button>
+        </div>
+      </section>
+      <div id="loading">
+        <span class="brand-mark">N</span>
+        <p>Preparing your expedition…</p>
+      </div>
+      <div id="error" role="alert" hidden>
+        <h2>The expedition could not start.</h2>
+        <p id="error-copy"></p>
+        <p>
+          Launch with <b>start.command</b>, then open the local address. This game requires a
+          browser with WebGL 2 graphics enabled.
+        </p>
+      </div>
+    </div>
+    <script src="js/audio.js"></script>
+    <script src="js/levels.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+    <script type="module" src="js/renderer.mjs"></script>
+    <noscript
+      ><p class="noscript-message">
+        Nova Rift needs JavaScript enabled and a browser with WebGL 2. Enable JavaScript, then
+        reload this page.
+      </p></noscript
+    >
+  </body>
 </html>
